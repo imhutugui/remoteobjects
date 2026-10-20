@@ -1,0 +1,20 @@
+# A richer interface: enums, PODs, signals with several arguments and a
+# value returning slot.
+
+POD Reading(int sensor, double value)
+
+class Machine
+{
+    ENUM State {Idle, Running, Fault};
+
+    PROP(State state = Idle);
+    PROP(int cycles);
+    PROP(Reading last);
+
+    SIGNAL(cycleFinished(Reading reading, int total));
+    SIGNAL(stateTransition(State state));
+
+    SLOT(Reading lastReading());
+    SLOT(void start(int cycles));
+    SLOT(void stop());
+};

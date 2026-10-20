@@ -1,0 +1,8 @@
+class Robot
+{
+    PROP(double x = 0);
+    PROP(double y = 0);
+    PROP(double theta = 0);
+    SLOT(void move(double linear, double angular));
+    SLOT(void stop());
+};

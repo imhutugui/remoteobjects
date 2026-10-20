@@ -1,0 +1,75 @@
+-- remoteobject: Qt-free remote object library
+add_rules("mode.debug", "mode.release")
+set_languages("c++20")
+set_warnings("all")
+
+add_requires("asio2")
+
+target("ro")
+    set_kind("static")
+    add_files("src/ro/*.cpp")
+    add_headerfiles("src/ro/*.h")
+    add_includedirs("src", {public = true})
+    add_packages("asio2", {public = true})
+
+-- .rep parser and code generator, shared by the CLI and the unit tests.
+target("repgen_core")
+    set_kind("static")
+    add_files("tools/repgen/*.cpp|main.cpp")
+    add_headerfiles("tools/repgen/*.h")
+    add_includedirs("tools/repgen", {public = true})
+
+target("repgen")
+    set_kind("binary")
+    add_files("tools/repgen/main.cpp")
+    add_deps("repgen_core")
+
+target("ro_tests")
+    set_kind("binary")
+    set_default(false)
+    add_files("tests/*.cpp")
+    add_deps("ro", "repgen_core")
+    add_includedirs("examples/simpleswitch")
+
+-- Examples. The rep_*.h headers are checked in; `xmake rep` regenerates them.
+target("simpleswitch_server")
+    set_kind("binary")
+    set_default(false)
+    add_files("examples/simpleswitch/server.cpp")
+    add_includedirs("examples/simpleswitch")
+    add_deps("ro")
+
+target("simpleswitch_client")
+    set_kind("binary")
+    set_default(false)
+    add_files("examples/simpleswitch/client.cpp")
+    add_includedirs("examples/simpleswitch")
+    add_deps("ro")
+
+target("machine_server")
+    set_kind("binary")
+    set_default(false)
+    add_files("examples/machine/server.cpp")
+    add_includedirs("examples/machine")
+    add_deps("ro")
+
+target("machine_client")
+    set_kind("binary")
+    set_default(false)
+    add_files("examples/machine/client.cpp")
+    add_includedirs("examples/machine")
+    add_deps("ro")
+
+target("robot_server")
+    set_kind("binary")
+    set_default(false)
+    add_files("examples/robot/server.cpp")
+    add_includedirs("examples/robot")
+    add_deps("ro")
+
+target("robot_client")
+    set_kind("binary")
+    set_default(false)
+    add_files("examples/robot/client.cpp")
+    add_includedirs("examples/robot")
+    add_deps("ro")
